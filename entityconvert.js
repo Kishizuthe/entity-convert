@@ -16,7 +16,7 @@
 		str = str.split('');
 		for (var i = 0, len = str.length; i < len; i++){
 			str[i] = fn(str[i]);
-		}
+		
 		return str.join('');
 	}
 
@@ -25,14 +25,16 @@
 		function getEnt(code){
 			return (
 				mode === 'css' ?
-				['\\00', code.toString(16), ' '] :
+				['\\00', code.toString(16)] :
+				mode === 'js' ?
+				['\\u', ('00' + code.toString(16)).slice(-4)] :
 				['&#', code, ';']
 			).join('');
 		}
 
 		return function(character){
 			var index = character.charCodeAt(0);
-			return (index < 32 || index > 127) ? getEnt(index) : character;
+			return (index > 127) ? getEnt(index) : character;
 		};
 
 	}
@@ -44,8 +46,9 @@
 	}
 
 	return {
-		css : replaceBy('css')
-		, html : replaceBy('html')
+		js : replaceBy('js'),
+		css : replaceBy('css'),
+		html : replaceBy('html')
 	};
 
 }));
