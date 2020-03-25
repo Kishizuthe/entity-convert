@@ -16,7 +16,7 @@
 		str = str.split('');
 		for (var i = 0, len = str.length; i < len; i++){
 			str[i] = fn(str[i]);
-		
+		}
 		return str.join('');
 	}
 
